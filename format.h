@@ -13,19 +13,12 @@
 #include "bmp.h"
 #include "BmpHeader.h"
 
-using namespace std;
 
+class format {
+private:
+  
 
-int main(int argc, char const *argv[])
-{
-  cmdline cmdl(options);
-  cmdl.parse(argc, argv);
-
-  bmp bmp(ifs);
-
-  (ifs).close();
-  (ofs).close();
-
-
-  return 0;
-}
+public:
+  format ();
+  virtual ~format ();
+};

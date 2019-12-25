@@ -46,7 +46,7 @@ static void opt_help(string const &);
 // Además, la ultima entrada de la tabla debe contener todos sus
 // elementos nulos, para indicar el final de la misma.
 //
-
+a
 /**************** Elementos globales ******************/
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
@@ -60,11 +60,11 @@ static ostream *oss = 0;	// Output Stream (clase para manejo de los flujos de sa
 static fstream ifs; 		// Input File Stream (derivada de la clase ifstream que deriva de istream para el manejo de archivos)
 static fstream ofs;		// Output File Stream (derivada de la clase ofstream que deriva de ostream para el manejo de archivos)
 
-static istream *dss = 0;
-static fstream dfs;
+//static istream *dss = 0;
+//static fstream dfs;
 
-static string option;
-static string method;
+//static string option;
+//static string method;
 /*****************************************************/
 
 static void
