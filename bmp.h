@@ -1,3 +1,6 @@
+#ifndef _BMP_H_
+#define _BMP_H_
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -8,51 +11,54 @@
 #include <ctime>
 #include <cstdint>
 
-#include "cmdline.h"
-#include "options.h"
-#include "bmp.h"
-#include "BmpHeader.h"
+using namespace std;
 
 // ESTRUCTURAS PARA EL HEADER DEL BMP
-#pragma pack(2)
+//#pragma pack(2)
 typedef struct {
-    unsigned short bfType; // magic numbre for File
-    unsigned int bfSize; // Size of File
-    unsigned short bfReserved1; //Reserved
-    unsigned short bfReserved2; //...
-    unsigned int bfIffBits; // Offset to bitmap data
+    uint16_t bfType; // magic numbre for File
+    uint32_t bfSize; // Size of File
+    uint16_t bfReserved1; //Reserved
+    uint16_t bfReserved2; //...
+    uint32_t bfIffBits; // Offset to bitmap data
 }bmpfileheader;
 
-#pragma pack()
+//#pragma pack()
 
 typedef struct{
-  unsigned int biSize;
-  int biWidth;
-  int biHeight;
-  unsigned short biPlanes;
-  unsigned short biBitCount;
-  unsigned int biCompression;
-  unsigned int biSizeImage;
-  int biXPelsPerMeter;
-  int biYPelsPerMeter;
-  unsigned int biClrUsed;
-  unsigned int biClrImportant;
+  uint32_t bit_size;
+  int32_t bit_width;
+  int32_t bit_height;
+  uint16_t planes;
+  uint16_t bit_count;
+  uint32_t compression;
+  uint32_t image_size;
+  int32_t x_pix_per_meter;
+  int32_t y_pix_per_meter;
+  uint32_t colors_used;
+  uint32_t color_important;
 }bmpinfoheader;
 
 typedef struct{
-  unsigned char rgbBlue;
-  unsigned char rgbRed;
-  unsigned char rgbGreen;
-  unsigned char rgbReserved;
+  uint32_t red_mask{0x00ff0000};
+  uint32_t green_mask{0x0000ff00};
+  uint32_t blue_mask{0x000000ff};
+  uint32_t alpha_mask{0xff000000};
+  uint32_t color_space_type{0x73524742};
+  uint32_t unused[16]{0};
 }rgb;
 
-class bmp :public format{
+class bmp{
 private:
     bmpfileheader bmpfileheader;
     bmpinfoheader bmpinfoheader;
     rgb rgb;
+    std::vector<uint8_t> data;
 
 public:
   bmp (fstream);
+  //bmp ();
   virtual ~bmp ();
 };
+
+#endif
