@@ -43,7 +43,7 @@ struct BMP {
     BMPFileHeader file_header;
     BMPInfoHeader bmp_info_header;
     BMPColorHeader bmp_color_header;
-    std::vector<uint8_t> data;
+    vector<uint8_t> data;
 
     BMP(const char *fname) {
         read(fname);
