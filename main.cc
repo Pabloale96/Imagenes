@@ -11,7 +11,7 @@
 #include "cmdline.h"
 #include "options.h"
 #include "bmp.h"
-#include "BmpHeader.h"
+
 
 using namespace std;
 

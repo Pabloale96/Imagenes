@@ -56,7 +56,7 @@ private:
     std::vector<uint8_t> data;
 
 public:
-  bmp (fstream);
+  bmp (const fstream);
   //bmp ();
   virtual ~bmp ();
 };

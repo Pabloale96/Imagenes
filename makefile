@@ -11,7 +11,7 @@ CXX = g++
 
 OBJETS= main.o cmdline.o bmp.o
 
-HEADER = options.h cmdline.h bmp.h BmpHeader.h
+HEADER = options.h cmdline.h bmp.h
 
 all: tp1
 
