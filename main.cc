@@ -22,12 +22,13 @@ int main(int argc, char const *argv[])
   cmdline cmdl(options);
   cmdl.parse(argc, argv);
 
-  bmp bmp(500,500,true);
-  bmp.readColorHeader(ifs);
-  bmp.readData(ifs);
+  bmp bmp1(ifs);
+  bmp bmp2(500,500,true);
+
+  bmp2.copyData(bmp1);
 
 
-  bmp.write(ofs);
+  bmp2.write(ofs);
 
   (ifs).close();
   (ofs).close();

@@ -195,3 +195,9 @@ void bmp::write_headers_and_data( fstream & of){
   (*this).writeColorHeader(of);
   (*this).writeData(of);
 }
+
+void bmp::copyData(bmp & bmpAux){
+  for (size_t i = 0; i < bmpAux.data.size(); i++) {
+    (*this).data[i] = bmpAux.data[i];
+  }
+}

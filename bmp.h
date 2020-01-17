@@ -83,5 +83,7 @@ public:
     void writeData(fstream &);
     void write_headers_and_data(fstream &);
 
+    void copyData(bmp &);
+
 };
 #endif
