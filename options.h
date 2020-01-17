@@ -46,7 +46,6 @@ static void opt_help(string const &);
 // Además, la ultima entrada de la tabla debe contener todos sus
 // elementos nulos, para indicar el final de la misma.
 //
-a
 /**************** Elementos globales ******************/
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},

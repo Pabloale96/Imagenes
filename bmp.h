@@ -8,8 +8,10 @@
 #include <cstdlib>
 #include <string>
 #include <limits>
+#include <stdexcept>
 #include <ctime>
 #include <cstdint>
+#include <vector>
 
 using namespace std;
 // ESTRUCTURAS PARA EL HEADER DEL BMP
@@ -54,15 +56,32 @@ private:
     BMPInfoHeader bmp_info_header;
     BMPColorHeader bmp_color_header;
     vector<uint8_t> data;
+    uint32_t row_stride2{ 0 };
 
 public:
-    bmp (const fstream);
+    bmp (fstream &);
     ~bmp ();
+    bmp(int32_t, int32_t, bool);
 
-    void read(static fstream &);
-    void readFileHeader(static fstream &);
-    void readInfoHeader(static fstream &);
-    void readColorHeader(static fstream &);
+    //Lectura:
+    void read(fstream &);
+    //Escritura:
+    void write(fstream &);
+
+    void checkColorHeader();
+
+    uint32_t make_stride_aligned(uint32_t);
+
+    void readFileHeader(fstream &);
+    void readInfoHeader(fstream &);
+    void readColorHeader(fstream & );
+    void readData(fstream &);
+
+    void writeFileHeader(fstream &);
+    void writeInfoHeader(fstream &);
+    void writeColorHeader(fstream &);
+    void writeData(fstream &);
+    void write_headers_and_data(fstream &);
 
 };
 #endif

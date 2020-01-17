@@ -5,7 +5,7 @@
 # #########################################################
 
 
-CXXARGS  = -g -Wall
+CXXARGS  = -g -Wall -lstdc++
 CXXFLAGS = -I. $(CXXARGS) -std=c++11
 CXX = g++
 
@@ -24,8 +24,8 @@ main.o: main.cc $(HEADER)
 cmdline.o: cmdline.cc cmdline.h
 		$(CXX) $(CXXFLAGS) -c cmdline.cc
 
-bmp.o: bmp.cc bmp.h BmpHeader.h
-				$(CXX) $(CXXFLAGS) -c bmp.cc
+bmp.o: bmp.cc bmp.h
+		$(CXX) $(CXXFLAGS) -c bmp.cc
 
 clean:
 	$(RM) -vf *.o
