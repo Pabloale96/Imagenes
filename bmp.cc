@@ -197,6 +197,9 @@ void bmp::write_headers_and_data( fstream & of){
 }
 
 void bmp::copyData(bmp & bmpAux){
+  (*this).bmp_info_header.x_pixels_per_meter=bmpAux.bmp_info_header.x_pixels_per_meter;
+  (*this).bmp_info_header.y_pixels_per_meter=bmpAux.bmp_info_header.y_pixels_per_meter;
+    
   for (size_t i = 0; i < bmpAux.data.size(); i++) {
     (*this).data[i] = bmpAux.data[i];
   }
