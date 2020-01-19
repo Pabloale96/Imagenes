@@ -17,7 +17,7 @@ using namespace std;
 // ESTRUCTURAS PARA EL HEADER DEL BMP
 #pragma pack(push, 1)
 struct BMPFileHeader {
-    uint16_t file_type{ 0x4D42 };          // File type always BM which is 0x4D42 (stored as hex uint16_t in little endian)
+    uint16_t file_type{ 0x4D42 };          // File type always BMP which is 0x4D42 (stored as hex uint16_t in little endian)
     uint32_t file_size{ 0 };               // Size of the file (in bytes)
     uint16_t reserved1{ 0 };               // Reserved, always 0
     uint16_t reserved2{ 0 };               // Reserved, always 0
@@ -38,6 +38,7 @@ struct BMPInfoHeader {
     int32_t y_pixels_per_meter{ 0 };
     uint32_t colors_used{ 0 };               // No. color indexes in the color table. Use 0 for the max number of colors allowed by bit_count
     uint32_t colors_important{ 0 };          // No. of colors used for displaying the bitmap. If 0 all colors are required
+
 };
 
 struct BMPColorHeader {
@@ -56,7 +57,10 @@ private:
     BMPInfoHeader bmp_info_header;
     BMPColorHeader bmp_color_header;
     vector<uint8_t> data;
-    uint32_t row_stride2{ 0 };
+    //vector<vector<uint8_t>> dataR;
+    //vector<vector<uint8_t>> dataB;
+    //vector<vector<uint8_t>> dataG;
+    uint32_t row_stride { 0 };
 
 public:
     bmp (fstream &);
@@ -84,6 +88,20 @@ public:
     void write_headers_and_data(fstream &);
 
     void copyData(bmp &);
+    void write(const char *);
+
+    //friend ostream & operator<<(ostream &,bmp &);
+    friend ostream & operator<<(ostream &,BMPInfoHeader );
+    friend ostream & operator<<(ostream &,BMPFileHeader );
+    friend ostream & operator<<(ostream &,BMPColorHeader );
+    friend ostream & operator<<(ostream &,vector<uint8_t> );
+
+    BMPFileHeader getFileHeader() {return (*this).file_header;}
+    BMPInfoHeader getInfoHeader() {return (*this).bmp_info_header;}
+    BMPColorHeader getColorHeader() {return (*this).bmp_color_header;}
+    vector<uint8_t> getData() {return (*this).data;}
+
+    void fill_region(uint32_t , uint32_t , uint32_t , uint32_t , uint8_t , uint8_t , uint8_t , uint8_t );
 
 };
 #endif

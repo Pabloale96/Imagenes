@@ -16,7 +16,7 @@ using namespace std;
 
 //Funciones:
 uint32_t bmp::make_stride_aligned(uint32_t align_stride) {
-    uint32_t new_stride = (*this).row_stride2;
+    uint32_t new_stride = (*this).row_stride;
     while (new_stride % align_stride != 0) {
         new_stride++;
     }
@@ -24,6 +24,9 @@ uint32_t bmp::make_stride_aligned(uint32_t align_stride) {
 }
 
 // Metodos de la clase de bmp:
+
+//BMPFileHeader & getFileHeader() {return (*this).file_header;}
+
 // Constructores:
 bmp::bmp( fstream & image){
   (*this).read(image);
@@ -42,8 +45,11 @@ bmp::bmp(int32_t width, int32_t height, bool has_alpha) {
 
         bmp_info_header.bit_count = 32;
         bmp_info_header.compression = 3;
-        (*this).row_stride2 = width * 4;
-        data.resize((*this).row_stride2 * height);
+        (*this).row_stride = width * 4;
+        data.resize((*this).row_stride * height);
+        for (size_t i = 0; i < data.size(); i++) {
+          data[0]=0;
+        }
         file_header.file_size = file_header.offset_data + data.size();
     }
     else {
@@ -52,11 +58,14 @@ bmp::bmp(int32_t width, int32_t height, bool has_alpha) {
 
         bmp_info_header.bit_count = 24;
         bmp_info_header.compression = 0;
-        (*this).row_stride2 = width * 3;
-        data.resize((*this).row_stride2 * height);
+        (*this).row_stride = width * 3;
+        data.resize((*this).row_stride * height);
+        for (size_t i = 0; i < data.size(); i++) {
+          data[0]=0;
+        }
 
         uint32_t new_stride = (*this).make_stride_aligned(4);
-        file_header.file_size = file_header.offset_data + static_cast<uint32_t>(data.size()) + bmp_info_header.height * (new_stride - (*this).row_stride2);
+        file_header.file_size = file_header.offset_data + static_cast<uint32_t>(data.size()) + bmp_info_header.height * (new_stride - (*this).row_stride);
     }
 }
 bmp::~bmp(){}
@@ -81,7 +90,6 @@ void bmp::readData( fstream & image){
       file_header.offset_data = sizeof(BMPFileHeader) + sizeof(BMPInfoHeader);
   }
   file_header.file_size = file_header.offset_data;
-
   if (bmp_info_header.height < 0) {
       throw  runtime_error("The program can treat only BMP images with the origin in the bottom left corner!");
   }
@@ -94,12 +102,12 @@ void bmp::readData( fstream & image){
       file_header.file_size += static_cast<uint32_t>(data.size());
   }
   else {
-      (*this).row_stride2 = bmp_info_header.width * bmp_info_header.bit_count / 8;
+      (*this).row_stride = bmp_info_header.width * bmp_info_header.bit_count / 8;
       uint32_t new_stride = (*this).make_stride_aligned(4);
-      vector<uint8_t> padding_row(new_stride - (*this).row_stride2);
+      vector<uint8_t> padding_row(new_stride - (*this).row_stride);
 
       for (int y = 0; y < bmp_info_header.height; ++y) {
-          image.read((char*)(data.data() + (*this).row_stride2 * y), (*this).row_stride2);
+          image.read((char*)(data.data() + (*this).row_stride * y), (*this).row_stride);
           image.read((char*)padding_row.data(), padding_row.size());
       }
       file_header.file_size += static_cast<uint32_t>(data.size()) + bmp_info_header.height * static_cast<uint32_t>(padding_row.size());
@@ -130,7 +138,6 @@ void bmp::readColorHeader( fstream & image){
   // Check if the pixel data is stored as BGRA and if the color space type is sRGB
   (*this).checkColorHeader();
 }
-
 void bmp::checkColorHeader(){
   BMPColorHeader expected_color_header;
   if(expected_color_header.red_mask != bmp_color_header.red_mask ||
@@ -157,14 +164,14 @@ void bmp::write( fstream & of){
       }
       else {
           uint32_t new_stride = (*this).make_stride_aligned(4);
-          vector<uint8_t> padding_row(new_stride - (*this).row_stride2);
+          vector<uint8_t> padding_row(new_stride - (*this).row_stride);
 
           (*this).writeFileHeader(of);
           (*this).writeInfoHeader(of);
           (*this).writeColorHeader(of);
 
           for (int y = 0; y < bmp_info_header.height; ++y) {
-              of.write((const char*)(data.data() + (*this).row_stride2 * y), (*this).row_stride2);
+              of.write((const char*)(data.data() + (*this).row_stride * y), (*this).row_stride);
               of.write((const char*)padding_row.data(), padding_row.size());
           }
       }
@@ -197,10 +204,163 @@ void bmp::write_headers_and_data( fstream & of){
 }
 
 void bmp::copyData(bmp & bmpAux){
-  (*this).bmp_info_header.x_pixels_per_meter=bmpAux.bmp_info_header.x_pixels_per_meter;
-  (*this).bmp_info_header.y_pixels_per_meter=bmpAux.bmp_info_header.y_pixels_per_meter;
-    
-  for (size_t i = 0; i < bmpAux.data.size(); i++) {
-    (*this).data[i] = bmpAux.data[i];
+
+  //(*this).bmp_info_header.x_pixels_per_meter=(*this).bmp_info_header.width/bmpAux.bmp_info_header.width;
+  //(*this).bmp_info_header.y_pixels_per_meter=(*this).bmp_info_header.height/bmpAux.bmp_info_header.height;
+
+  size_t j = 0;
+  while(j < (*this).data.size()) {
+    for (size_t i = 0; i < bmpAux.data.size(); i++) {
+      (*this).data[j] = bmpAux.data[i];
+      j++;
+      if (j ==(*this).data.size()) {
+        break;
+      }
+    }
+    //j=i;
+    cout << j << '\n';
   }
 }
+
+void bmp::write(const char *fname) {
+    fstream of{ fname, ios_base::binary };
+    of.open(fname, ios::binary|ios::out);
+    if (of) {
+        if (bmp_info_header.bit_count == 32) {
+            write_headers_and_data(of);
+        }
+        else if (bmp_info_header.bit_count == 24) {
+            if (bmp_info_header.width % 4 == 0) {
+                write_headers_and_data(of);
+            }
+            else {
+                uint32_t new_stride = make_stride_aligned(4);
+                vector<uint8_t> padding_row(new_stride - (*this).row_stride);
+
+                (*this).writeFileHeader(of);
+                (*this).writeInfoHeader(of);
+                (*this).writeColorHeader(of);
+
+                for (int y = 0; y < bmp_info_header.height; ++y) {
+                    of.write((const char*)(data.data() + (*this).row_stride * y), (*this).row_stride);
+                    of.write((const char*)padding_row.data(), padding_row.size());
+                }
+            }
+        }
+        else {
+            throw runtime_error("The program can treat only 24 or 32 bits per pixel BMP files");
+        }
+    }
+    else {
+        throw runtime_error("Unable to open the output image file.");
+    }
+    (of).close();
+}
+
+ostream & operator<<(ostream & os,BMPFileHeader & file_header){
+
+  os<<file_header.file_type;
+  os<<endl;
+  os<<file_header.file_size;
+  os<<endl;
+  os<<file_header.reserved1;
+  os<<endl;
+  os<<file_header.reserved2;
+  os<<endl;
+  os<<file_header.offset_data;
+  os<<endl;
+  return os;
+}
+
+ostream & operator<<(ostream & os,BMPInfoHeader & info_header){
+
+  os<<info_header.size;
+  os<<endl;
+  os<<info_header.width;
+  os<<endl;
+  os<<info_header.height;
+  os<<endl;
+  os<<info_header.planes;
+  os<<endl;
+  os<<info_header.bit_count;
+  os<<endl;
+  os<<info_header.compression;
+  os<<endl;
+  os<<info_header.size_image;
+  os<<endl;
+  os<<info_header.x_pixels_per_meter;
+  os<<endl;
+  os<<info_header.y_pixels_per_meter;
+  os<<endl;
+  os<<info_header.colors_used;
+  os<<endl;
+  os<<info_header.colors_important;
+  os<<endl;
+  return os;
+}
+
+ostream & operator<<(ostream & os,BMPColorHeader & color_header){
+
+  os<<color_header.red_mask;
+  os<<endl;
+  os<<color_header.green_mask;
+  os<<endl;
+  os<<color_header.blue_mask;
+  os<<endl;
+  os<<color_header.alpha_mask;
+  os<<endl;
+  os<<color_header.color_space_type;
+  os<<endl;
+  os<<color_header.unused;
+  os<<endl;
+
+  return os;
+}
+
+ostream & operator<<(ostream & os,vector<uint8_t> & data){
+
+  for (size_t i = 0; i < data.size(); i++) {
+    os<<data[i];
+  }
+
+      return os;
+}
+
+void bmp::fill_region(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint8_t B, uint8_t G, uint8_t R, uint8_t A) {
+    if (x0 + w > (uint32_t)bmp_info_header.width || y0 + h > (uint32_t)bmp_info_header.height) {
+        throw std::runtime_error("The region does not fit in the image!");
+    }
+
+    uint32_t channels = bmp_info_header.bit_count / 8;
+    for (uint32_t y = y0; y < y0 + h; ++y) {
+        for (uint32_t x = x0; x < x0 + w; ++x) {
+            data[channels * (y * bmp_info_header.width + x) + 0] = B;
+            data[channels * (y * bmp_info_header.width + x) + 1] = G;
+            data[channels * (y * bmp_info_header.width + x) + 2] = R;
+            if (channels == 4) {
+                data[channels * (y * bmp_info_header.width + x) + 3] = A;
+            }
+        }
+    }
+}
+
+/*
+ostream & operator<<(ostream & os,bmp & bmp_temp){
+  os<<"File Header:";
+  os<<bmp_temp.getFileHeader();
+  os<<endl;
+  os<<"Info Header:";
+  os<<endl;
+  os<<bmp_temp.getInfoHeader();
+  os<<endl;
+  os<<"Color Header:";
+  os<<endl;
+  os<<bmp_temp.getColorHeader();
+  os<<endl;
+  os<<"Data:";
+  os<<endl;
+  os<<bmp_temp.getData();
+  os<<endl;
+  return os;
+}
+*/
