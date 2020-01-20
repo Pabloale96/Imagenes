@@ -72,6 +72,9 @@ public:
     //Escritura:
     void write(fstream &);
 
+    void setHeight(int32_t &);
+    void setWidth(int32_t &);
+
     void checkColorHeader();
 
     uint32_t make_stride_aligned(uint32_t);

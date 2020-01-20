@@ -209,17 +209,15 @@ void bmp::copyData(bmp & bmpAux){
   //(*this).bmp_info_header.y_pixels_per_meter=(*this).bmp_info_header.height/bmpAux.bmp_info_header.height;
 
   size_t j = 0;
-  while(j < (*this).data.size()) {
+  //while(j < (*this).data.size()) {
     for (size_t i = 0; i < bmpAux.data.size(); i++) {
-      (*this).data[j] = bmpAux.data[i];
-      j++;
-      if (j ==(*this).data.size()) {
-        break;
-      }
+      (*this).data[i] = bmpAux.data[i];
+      //j++;
+      //if (j ==(*this).data.size()) {
+      //  break;
+      //}
     }
-    //j=i;
-    cout << j << '\n';
-  }
+  //}
 }
 
 void bmp::write(const char *fname) {
@@ -364,3 +362,6 @@ ostream & operator<<(ostream & os,bmp & bmp_temp){
   return os;
 }
 */
+
+void bmp::setHeight(int32_t & h) {bmp_info_header.height=h;}
+void bmp::setWidth(int32_t & w) {bmp_info_header.width=w;}
