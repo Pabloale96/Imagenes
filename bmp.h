@@ -75,6 +75,9 @@ public:
     void setHeight(int32_t &);
     void setWidth(int32_t &);
 
+    void setXperPixel(int32_t & xx){bmp_info_header.x_pixels_per_meter=xx;}
+    void setYperPixel(int32_t & yy){bmp_info_header.y_pixels_per_meter=yy;}
+
     void checkColorHeader();
 
     uint32_t make_stride_aligned(uint32_t);
@@ -94,10 +97,10 @@ public:
     void write(const char *);
 
     //friend ostream & operator<<(ostream &,bmp &);
-    friend ostream & operator<<(ostream &,BMPInfoHeader );
-    friend ostream & operator<<(ostream &,BMPFileHeader );
-    friend ostream & operator<<(ostream &,BMPColorHeader );
-    friend ostream & operator<<(ostream &,vector<uint8_t> );
+    //friend ostream & operator<<(ostream &,BMPInfoHeader );
+    //friend ostream & operator<<(ostream &,BMPFileHeader );
+    //friend ostream & operator<<(ostream &,BMPColorHeader );
+    //friend ostream & operator<<(ostream &,vector<uint8_t> );
 
     BMPFileHeader getFileHeader() {return (*this).file_header;}
     BMPInfoHeader getInfoHeader() {return (*this).bmp_info_header;}

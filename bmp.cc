@@ -209,15 +209,16 @@ void bmp::copyData(bmp & bmpAux){
   //(*this).bmp_info_header.y_pixels_per_meter=(*this).bmp_info_header.height/bmpAux.bmp_info_header.height;
 
   size_t j = 0;
-  //while(j < (*this).data.size()) {
+  while(j < (*this).data.size()) {
     for (size_t i = 0; i < bmpAux.data.size(); i++) {
-      (*this).data[i] = bmpAux.data[i];
-      //j++;
-      //if (j ==(*this).data.size()) {
-      //  break;
-      //}
+      (*this).data[j] = bmpAux.data[i];
+      j++;
+      if (j ==(*this).data.size()) {
+        break;
+      }
     }
   //}
+}
 }
 
 void bmp::write(const char *fname) {
@@ -255,75 +256,6 @@ void bmp::write(const char *fname) {
     (of).close();
 }
 
-ostream & operator<<(ostream & os,BMPFileHeader & file_header){
-
-  os<<file_header.file_type;
-  os<<endl;
-  os<<file_header.file_size;
-  os<<endl;
-  os<<file_header.reserved1;
-  os<<endl;
-  os<<file_header.reserved2;
-  os<<endl;
-  os<<file_header.offset_data;
-  os<<endl;
-  return os;
-}
-
-ostream & operator<<(ostream & os,BMPInfoHeader & info_header){
-
-  os<<info_header.size;
-  os<<endl;
-  os<<info_header.width;
-  os<<endl;
-  os<<info_header.height;
-  os<<endl;
-  os<<info_header.planes;
-  os<<endl;
-  os<<info_header.bit_count;
-  os<<endl;
-  os<<info_header.compression;
-  os<<endl;
-  os<<info_header.size_image;
-  os<<endl;
-  os<<info_header.x_pixels_per_meter;
-  os<<endl;
-  os<<info_header.y_pixels_per_meter;
-  os<<endl;
-  os<<info_header.colors_used;
-  os<<endl;
-  os<<info_header.colors_important;
-  os<<endl;
-  return os;
-}
-
-ostream & operator<<(ostream & os,BMPColorHeader & color_header){
-
-  os<<color_header.red_mask;
-  os<<endl;
-  os<<color_header.green_mask;
-  os<<endl;
-  os<<color_header.blue_mask;
-  os<<endl;
-  os<<color_header.alpha_mask;
-  os<<endl;
-  os<<color_header.color_space_type;
-  os<<endl;
-  os<<color_header.unused;
-  os<<endl;
-
-  return os;
-}
-
-ostream & operator<<(ostream & os,vector<uint8_t> & data){
-
-  for (size_t i = 0; i < data.size(); i++) {
-    os<<data[i];
-  }
-
-      return os;
-}
-
 void bmp::fill_region(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint8_t B, uint8_t G, uint8_t R, uint8_t A) {
     if (x0 + w > (uint32_t)bmp_info_header.width || y0 + h > (uint32_t)bmp_info_header.height) {
         throw std::runtime_error("The region does not fit in the image!");
@@ -342,26 +274,11 @@ void bmp::fill_region(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint8_t 
     }
 }
 
-/*
-ostream & operator<<(ostream & os,bmp & bmp_temp){
-  os<<"File Header:";
-  os<<bmp_temp.getFileHeader();
-  os<<endl;
-  os<<"Info Header:";
-  os<<endl;
-  os<<bmp_temp.getInfoHeader();
-  os<<endl;
-  os<<"Color Header:";
-  os<<endl;
-  os<<bmp_temp.getColorHeader();
-  os<<endl;
-  os<<"Data:";
-  os<<endl;
-  os<<bmp_temp.getData();
-  os<<endl;
-  return os;
-}
-*/
-
-void bmp::setHeight(int32_t & h) {bmp_info_header.height=h;}
-void bmp::setWidth(int32_t & w) {bmp_info_header.width=w;}
+void bmp::setHeight(int32_t & h) {
+  bmp_info_header.height=h;
+  (*this).row_stride = bmp_info_header.width * 3;
+  data.resize((*this).row_stride * bmp_info_header.height);}
+void bmp::setWidth(int32_t & w) {
+  bmp_info_header.width=w;
+  (*this).row_stride = bmp_info_header.width * 3;
+  data.resize((*this).row_stride * bmp_info_header.height);}
