@@ -1,0 +1,23 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{Desarrollo}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Manejo del Header de una Imagen}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{Modificaci\363n del Ancho y el Alto de la imagen}{}% 4
+\BOOKMARK [1][-]{section.4}{Algoritmo para escala de grises}{}% 5
+\BOOKMARK [2][-]{subsection.4.1}{Promedio de los colores RGB}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.2}{Valor del gris}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.3}{Paleta}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Negativo de la imagen}{}% 9
+\BOOKMARK [1][-]{section.6}{Im\341genes agregando un ruido}{}% 10
+\BOOKMARK [2][-]{subsection.6.1}{Ruido constante}{section.6}% 11
+\BOOKMARK [2][-]{subsection.6.2}{Ruido aleatorio con distribuci\363n Normal}{section.6}% 12
+\BOOKMARK [2][-]{subsection.6.3}{Ruido Aleatorio con distribuci\363n Bernulli}{section.6}% 13
+\BOOKMARK [1][-]{section.7}{Recorrido de una imagen}{}% 14
+\BOOKMARK [1][-]{section.8}{Recorrido horizontal y vertical}{}% 15
+\BOOKMARK [1][-]{section.9}{Recorrido de Hilbert}{}% 16
+\BOOKMARK [1][-]{section.10}{Zoom}{}% 17
+\BOOKMARK [1][-]{section.11}{Transformada Coseno}{}% 18
+\BOOKMARK [1][-]{section.12}{Ecualizaci\363n del histograma}{}% 19
+\BOOKMARK [1][-]{section.13}{Streching}{}% 20
+\BOOKMARK [1][-]{section.14}{Compresi\363n}{}% 21
+\BOOKMARK [2][-]{subsection.14.1}{K-means}{section.14}% 22
+\BOOKMARK [2][-]{subsection.14.2}{IFS}{section.14}% 23

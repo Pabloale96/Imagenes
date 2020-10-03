@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{Desarrollo}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Filtros}{section.2}% 3
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Blur}{subsection.2.1}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Sobel}{section.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Bottom Sobel}{subsection.2.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Top Sobel}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Left Sobel}{subsection.2.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Right Sobel}{subsection.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.5}{Im\341genes sobre el m\351todo Sobel}{subsection.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{Emboss}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.4}{Outline}{section.2}% 12
+\BOOKMARK [2][-]{subsection.2.5}{Laplace}{section.2}% 13
+\BOOKMARK [2][-]{subsection.2.6}{Sharpen}{section.2}% 14
+\BOOKMARK [2][-]{subsection.2.7}{Kernel}{section.2}% 15
+\BOOKMARK [1][-]{section.3}{Banco de Filtro}{}% 16
+\BOOKMARK [2][-]{subsubsection.3.0.1}{Sub-Bandas}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{Filtrado por partes con banco de filtro}{}% 18
+\BOOKMARK [1][-]{section.5}{Conclusiones}{}% 19
